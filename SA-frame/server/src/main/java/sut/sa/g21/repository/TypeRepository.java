@@ -8,4 +8,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
     public
     interface TypeRepository extends JpaRepository<Type, Long> {
+        Type findByTypeName(String typeName);
 }

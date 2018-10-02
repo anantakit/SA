@@ -25,9 +25,28 @@ export class ClassificationService {
   getTypes(): Observable<any> {
     return this.http.get(this.API + '/Type');
   }
-  public addProductClassification(inputProduct:string ,classSelect:number ,typeSelect:number,countrySelect:number):Observable<any>{
-    return this.http.post(this.API + '/Product/addClassification',{
-      "productID": 0,"productName": inputProduct ,"classID": classSelect ,"typeID": typeSelect ,"countryID":countrySelect
+  public putProduct(productSelect:string,classSelect:string,typeSelect:string,countrySelect:string):Observable<any>{
+    return this.http.put(this.API + '/Product/'+productSelect+'/'+classSelect+'/'+typeSelect+'/'+countrySelect,{
+      "productName":productSelect,
+      "className":classSelect,
+      "typeName":typeSelect,
+      "countryName":countrySelect
+    });
+  }
+
+  addClassification(inputClass:string){
+    return this.http.post(this.API + '/Classification/addClassification/'+inputClass,{
+      "className":inputClass,
+    });
+  }
+  addType(inputType:string){
+    return this.http.post(this.API + '/Type/addType/'+inputType,{
+      "className":inputType,
+    });
+  }
+  addCountry(inputCountry:string){
+    return this.http.post(this.API + '/Country/addCountry/'+inputCountry,{
+      "className":inputCountry,
     });
   }
 }

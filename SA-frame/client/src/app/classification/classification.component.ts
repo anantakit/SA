@@ -14,7 +14,8 @@ export interface PeriodicElement {
   styleUrls: ['./classification.component.css']
 })
 export class ClassificationComponent implements OnInit {
-  inputProduct = ''; classSelect:number = -1; typeSelect:number = -1; countrySelect:number = -1;
+  productSelect:string = ''; classSelect:string = ''; typeSelect:string = ''; countrySelect:string = '';
+  inputClass:string = ''; inputCountry:string = ''; inputType:string = '';
   products: Array<any>;
   countrys: Array<any>;
   classifications: Array<any>;
@@ -25,57 +26,108 @@ export class ClassificationComponent implements OnInit {
 
   constructor(private classificationService: ClassificationService) { }
 ngOnInit() {
+      this.getProductList();
+      this.getClassificationList();
+      this.getCountryList();
+      this.getTypeList();
+  }
+  //------------Load data -------------
+  getProductList(){
     this.classificationService.getProduct().subscribe(data => {
       this.products = data;
-      const ELEMENT_DATA: PeriodicElement[] = [];
+      const productList: PeriodicElement[] = [];
       console.log(this.products);
-      for (let index = 0; index < data["length"]; index++) {
-        ELEMENT_DATA.push({
-          productId: data[index].productId,
-          productName: data[index].productName,
-          classification: data[index].classification.className,
-          country: data[index].country.countryName,
-          type: data[index].type.typeName,
+      for (let index = 0; index < this.products["length"]; index++) {
+        productList.push({
+          productId: this.products[index].productId,
+          productName: this.products[index].productName,
+          classification: this.products[index].classification.className,
+          country: this.products[index].country.countryName,
+          type: this.products[index].type.typeName,
         })
       }  
-      //console.log('Element data 0 : '+ELEMENT_DATA[0].type);
-      this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+      //console.log('productList[0].type =  : '+productList[0].type); 
+      this.dataSource = new MatTableDataSource(productList);
       this.dataSource.paginator = this.paginator;
     });
-    //เอาข้อมูลเข้าcombo box
-    this.classificationService.getCountry().subscribe(data => {
-      this.countrys = data;
-      console.log(this.countrys);
-    });
+  }  
+  getTypeList(){
     this.classificationService.getTypes().subscribe(data => {
       this.types = data;
       console.log(this.types);
     });
+  }
+
+  getCountryList(){
+    this.classificationService.getCountry().subscribe(data => {
+      this.countrys = data;
+      console.log(this.countrys);
+    });
+  }
+
+  getClassificationList(){
     this.classificationService.getClassification().subscribe(data => {
       this.classifications = data;
       console.log(this.classifications);
     });
   }
+//------------------------------------------------------------------------------------------------------
 
-
-  save(){
-    if(this.inputProduct == '' || this.classSelect == -1 || this.typeSelect == -1 || this.countrySelect == -1){
+  updateProduct(){
+    if(this.productSelect == '' || this.classSelect == '' || this.typeSelect == '' || this.countrySelect == ''){
       console.log('กรอกข้อมูลไม่ครบ!');
     }
     else{
-      //post
-        
-        console.log('Product : ' +this.inputProduct);
-        console.log('classification : ' +this.classSelect);
-        console.log('type : '+this.typeSelect);
-        console.log('country : '+this.countrySelect);
-      this.classificationService.addProductClassification(this.inputProduct,this.classSelect,this.typeSelect,this.countrySelect).subscribe(
-        data => {
-        console.log('Product : ' +this.inputProduct);
-        console.log('classification : ' +this.classSelect);
-        console.log('type : '+this.typeSelect);
-        console.log('country : '+this.countrySelect);
+      //put
+      this.classificationService.putProduct(this.productSelect,this.classSelect,this.typeSelect,this.countrySelect).subscribe(data => {
+        console.log('update Success');
+        this.productSelect = '';
+        this.classSelect = '';
+        this.typeSelect = '';
+        this.countrySelect = '';
+        this.getProductList();
       });
+        console.log('Product : ' +this.productSelect);
+        console.log('classification : ' +this.classSelect);
+        console.log('type : '+this.typeSelect);
+        console.log('country : '+this.countrySelect);
     }
+  }
+
+  addClassification(){
+    this.classificationService.addClassification(this.inputClass).subscribe(
+      data => {
+        console.log("POST Request is successful ", data);
+        this.getClassificationList();
+        this.inputClass = '';
+      },
+      error => {
+        console.log("Error", error);
+      }
+    );
+  }
+  addType(){
+    this.classificationService.addType(this.inputType).subscribe(
+      data => {
+        console.log("POST Request is successful ", data);
+        this.getTypeList();
+        this.inputType = '';
+      },
+      error => {
+        console.log("Error", error);
+      }
+    );
+  }
+  addCountry(){
+    this.classificationService.addCountry(this.inputCountry).subscribe(
+      data => {
+        console.log("POST Request is successful ", data);
+        this.getCountryList();
+        this.inputCountry = '';
+      },
+      error => {
+        console.log("Error", error);
+      }
+    );
   }
 }

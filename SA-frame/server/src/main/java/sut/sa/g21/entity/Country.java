@@ -15,11 +15,11 @@ public class Country{
     private @NonNull long countryId;
     private @NonNull String countryName;
     
-    protected Country(){}
+    public Country(){}
     public Country(String name){
         this.countryName = name;
     }    
     public Country(long countryId){
         this.countryId = countryId;
-    }   
+    } 
 }

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sut.sa.g21.entity.Classification;
 import sut.sa.g21.entity.Country;
@@ -29,9 +31,16 @@ public class Controller{
     public Collection<Classification> classification(){
         return classificationRepository.findAll();
     }
+
     @GetMapping("/Classification/{classID}")
     public Optional<Classification> takeinClassificationByid(@PathVariable Long classID ){
         return classificationRepository.findById(classID);
+    }
+
+    @PostMapping("/Classification/addClassification/{className}")
+    public Classification newClassification(@PathVariable String className){
+        Classification newClassification = new Classification(className);
+        return classificationRepository.save(newClassification);  
     }
     // ---------------  Product ---------------
 
@@ -45,6 +54,18 @@ public class Controller{
         return productRepository.findById(productID);
     }
 
+    @PutMapping("/Product/{productName}/{className}/{typeName}/{countryName}")
+    public Product newProduct(@PathVariable String productName,@PathVariable String className ,@PathVariable String typeName,@PathVariable String countryName) {
+        Product newProduct = productRepository.findByProductName(productName);
+        Country newCountry = countryRepository.findByCountryName(countryName);
+        Classification newClassification = classificationRepository.findByClassName(className);
+        Type newType = typeRepository.findByTypeName(typeName);
+        newProduct.setCountry(newCountry);
+        newProduct.setClassification(newClassification);                         
+        newProduct.setType(newType);                          
+        return productRepository.save(newProduct);                               
+    }
+
      // --------------- Country --------------
 
      @GetMapping("/Country")
@@ -56,6 +77,12 @@ public class Controller{
          return countryRepository.findById(countryID);
      }
 
+    @PostMapping("/Country/addCountry/{countryName}")
+    public Country newCountry(@PathVariable String countryName){
+        Country newCountry = new Country(countryName); 
+        return countryRepository.save(newCountry);  
+    }
+
     // --------------- Type --------------
     @GetMapping("/Type")
     public Collection<Type> Type(){
@@ -65,5 +92,10 @@ public class Controller{
     @GetMapping("/Type/{typeID}")
     public Optional<Type> takeinTypeByid(@PathVariable Long typeID ){
         return typeRepository.findById(typeID);
+    }
+    @PostMapping("/Type/addType/{typeName}")
+    public Type newType(@PathVariable String typeName){
+        Type newType = new Type(typeName); 
+        return typeRepository.save(newType); 
     }
 }

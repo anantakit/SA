@@ -17,17 +17,17 @@
       <div class="classification">
         <ul>
           <p>สินค้า</p>
-          <form class="example-form">
-            <mat-form-field>
-              <input matInput name="ProductName" type="text" placeholder="ชื่อสินค้า" [(ngModel)]="inputProduct"
-                required>
-              <mat-error>This field is required</mat-error>
-            </mat-form-field>
-          </form>
+          <mat-form-field>
+            <mat-select [(ngModel)]="productSelect" placeholder="เลือกสินค้า">
+              <mat-option *ngFor="let product of products" [value]="product.productName">
+                {{product.productName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
           <p>หมวดหมู่</p>
           <mat-form-field>
             <mat-select [(ngModel)]="classSelect" placeholder="หมวดหมู่ของสินค้า">
-              <mat-option *ngFor="let classification of classifications" [value]="classification.classId">
+              <mat-option *ngFor="let classification of classifications" [value]="classification.className">
                 {{classification.className}}
               </mat-option>
             </mat-select>
@@ -35,7 +35,7 @@
           <p>ประเภท</p>
           <mat-form-field>
             <mat-select placeholder="ประเภทของสินค้า" [(ngModel)]="typeSelect">
-              <mat-option *ngFor="let type of types " [value]="type.typeId">
+              <mat-option *ngFor="let type of types " [value]="type.typeName">
                 {{type.typeName}}
               </mat-option>
             </mat-select>
@@ -43,12 +43,12 @@
           <p>ส่งจากประเทศ</p>
           <mat-form-field>
             <mat-select placeholder="ประเทศ" [(ngModel)]="countrySelect">
-              <mat-option *ngFor="let country of countrys " [value]="country.countryId">
+              <mat-option *ngFor="let country of countrys " [value]="country.countryName">
                 {{country.countryName}}
               </mat-option>
             </mat-select>
           </mat-form-field><br>
-          <button mat-raised-button color="primary" (click)="save()">บันทึก</button>
+          <button mat-raised-button color="primary" (click)="updateProduct()">บันทึก</button>
         </ul>
       </div>
     </mat-expansion-panel>
@@ -98,6 +98,36 @@
 
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          เพิ่มหมวดหมู่/ประเทศ/ประเภท
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="addClassification">
+          <mat-grid-list cols="2" rowHeight="2:1">
+              <mat-grid-tile>
+                <mat-form-field class="example-full-width">
+                  <input matInput name="inputClass"  type="text" placeholder="ชื่อหมวดหมู่"  [(ngModel)]="inputClass" >
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile><button mat-raised-button color="primary" (click)="addClassification()">เพิ่ม</button></mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field class="example-full-width">
+                    <input matInput name="inputType"  type="text" placeholder="ชื่อประเภท"  [(ngModel)]="inputType" >
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile><button mat-raised-button color="primary" (click)="addType()">เพิ่ม</button></mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field class="example-full-width">
+                    <input matInput name="inputCountry"  type="text" placeholder="ชื่อประเทศ"  [(ngModel)]="inputCountry" >
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile><button mat-raised-button color="primary" (click)="addCountry()">เพิ่ม</button></mat-grid-tile>
+            </mat-grid-list>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

@@ -15,11 +15,11 @@ public class Classification{
     private @NonNull long classId;
     private @NonNull String className;
         
-    protected Classification(){}
+    public Classification(){}
     public Classification(String className){
         this.className = className;
     }
     public Classification(long classId){
         this.classId = classId;
-    }   
+    } 
 }
