@@ -13,7 +13,7 @@ public class Classification{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private @NonNull long classId;
-    private @NonNull String className;
+    private @NonNull @UniqueConstraint String className;
         
     public Classification(){}
     public Classification(String className){
