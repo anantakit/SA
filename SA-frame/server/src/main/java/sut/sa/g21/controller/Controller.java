@@ -55,7 +55,7 @@ public class Controller{
     }
 
     @PutMapping("/Product/{productName}/{className}/{typeName}/{countryName}")
-    public Product newProduct(@PathVariable String productName,@PathVariable String className ,@PathVariable String typeName,@PathVariable String countryName) {
+    public Product setClassification(@PathVariable String productName,@PathVariable String className ,@PathVariable String typeName,@PathVariable String countryName) {
         Product newProduct = productRepository.findByProductName(productName);
         Country newCountry = countryRepository.findByCountryName(countryName);
         Classification newClassification = classificationRepository.findByClassName(className);

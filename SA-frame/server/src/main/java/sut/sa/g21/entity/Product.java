@@ -45,16 +45,4 @@ public class Product{
         this.classification = classification;
         this.type = type;
     }
-
-	public void setCountry(Country newCountry) {
-        this.country = newCountry;
-	}
-
-	public void setClassification(Classification newClassification) {
-        this.classification = newClassification;
-	}
-
-	public void setType(Type newType) {
-        this.type = newType;
-	}
 }
